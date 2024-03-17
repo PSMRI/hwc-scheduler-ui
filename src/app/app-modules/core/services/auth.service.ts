@@ -71,13 +71,13 @@ export class AuthService {
     return this.http.post(environment.getSessionExistsURL, {})
       // .map(res => res.json());
   }
-  // getSwymedLogout() {
-  //   return this.http.get(environment.getSwymedLogoutUrl)
-  //     .map(res => res.json())
-  //     .catch(err => {
-  //       return Observable.throw(err);
-  //     })
-  // }
+  getSwymedLogout() {
+    return this.http.get(environment.getSwymedLogoutUrl)
+      // .map(res => res.json())
+      // .catch(err => {
+      //   return Observable.throw(err);
+      // })
+  }
   getUIVersionAndCommitDetails(url: any) {
     return this.http.get(url)
       // .map((res) => res.json());

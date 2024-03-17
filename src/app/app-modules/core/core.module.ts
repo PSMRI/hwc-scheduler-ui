@@ -94,6 +94,24 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { WebcamModule } from 'ngx-webcam';
 import { NgChartsModule } from 'ng2-charts';
+import { myEmailDirective } from './directives/email/myEmail.directive';
+import { MyMobileNumberDirective } from './directives/MobileNumber/myMobileNumber.directive';
+import { myNameDirective } from './directives/name/myName.directive';
+import { myPasswordDirective } from './directives/password/myPassword.directive';
+import { DisableFormControlDirective } from './directives/disableFormControl.directive';
+import { NullDefaultValueDirective } from './directives/null-default-value.directive';
+import { NumberValidatorDirective } from './directives/numberValidator.directive';
+import { StringValidatorDirective } from './directives/stringValidator.directive';
+import { AppHeaderComponent } from './components/app-header/app-header.component';
+import { ShowCommitAndVersionDetailsComponent } from './components/show-commit-and-version-details/show-commit-and-version-details.component';
+import { PreviousDetailsComponent } from './components/previous-details/previous-details.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SetLanguageComponent } from './components/set-language.component';
+import { TextareaDialogComponent } from './components/textarea-dialog/textarea-dialog.component';
+import { TextareaDialog } from './components/textarea-dialog/textarea-dialog.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { FullCalendarModule } from '@fullcalendar/angular';
+
 
 
 @NgModule({
@@ -124,6 +142,7 @@ import { NgChartsModule } from 'ng2-charts';
     MatProgressSpinnerModule,
     MatGridListModule,
     WebcamModule,
+    MatSidenavModule,
     NgChartsModule
     // NgChartsModule
     // PaginationModule.forRoot()
@@ -132,32 +151,49 @@ import { NgChartsModule } from 'ng2-charts';
     // WebCamComponent,
     CommonDialogComponent,
     CameraDialogComponent,
-    // TextareaDialogComponent,
-    // SpinnerComponent,
+    TextareaDialogComponent,
+    SpinnerComponent,
     AppFooterComponent,
-    // SetLanguageComponent,
-    // AppHeaderComponent,
-    // PreviousDetailsComponent,
-    // ShowCommitAndVersionDetailsComponent,
-    // myEmail, myMobileNumber, myName, myPassword, StringValidator, NullDefaultValueDirective, NumberValidator, DisableFormControlDirective
+    SetLanguageComponent,
+    AppHeaderComponent,
+    PreviousDetailsComponent,
+    ShowCommitAndVersionDetailsComponent,
+    myEmailDirective,
+    MyMobileNumberDirective,
+    myNameDirective,
+    myPasswordDirective,
+    DisableFormControlDirective,
+    NullDefaultValueDirective,
+    NumberValidatorDirective,
+    StringValidatorDirective 
   ],
   exports: [
-    // RouterModule,
-    // FormsModule,
-    // ReactiveFormsModule,
-    // MaterialModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
     // Md2Module,
-    // SetLanguageComponent,
+       SetLanguageComponent,
        CommonDialogComponent,
        CameraDialogComponent,
-    // TextareaDialogComponent,
-    // SpinnerComponent,
+       TextareaDialogComponent,
+      SpinnerComponent,
       AppFooterComponent,
-    // AppHeaderComponent,
-    // PreviousDetailsComponent,
+      AppHeaderComponent,
+      PreviousDetailsComponent,
     // PaginationModule,
-    // FullCalendarModule,ShowCommitAndVersionDetailsComponent,
-    // myEmail, myMobileNumber, myName, myPassword, DisableFormControlDirective, StringValidator, NumberValidator, NullDefaultValueDirective
+    FullCalendarModule,
+    ShowCommitAndVersionDetailsComponent,
+    myEmailDirective,
+    MyMobileNumberDirective,
+    myNameDirective,
+    myPasswordDirective,
+    myPasswordDirective,
+    DisableFormControlDirective,
+    NullDefaultValueDirective,
+    NumberValidatorDirective,
+    StringValidatorDirective
+    
   ],
   //  entryComponents: [
       //  CommonDialogComponent,
@@ -182,7 +218,7 @@ export class CoreModule {
         BeneficiaryDetailsService,
         HttpInterceptorService,
         HttpServiceService,
-        // TextareaDialog,
+        TextareaDialog,
         AuthGuard,
         AuthService,
         SpinnerService,

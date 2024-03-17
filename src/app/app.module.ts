@@ -51,11 +51,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppComponent } from './app.component';
 import { WebcamModule } from 'ngx-webcam';
+import { RedirOpenComponent } from './redir-open/redir-open.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    // RedirOpenComponent
+    RedirOpenComponent
   ],
    imports: [
     BrowserModule,
@@ -82,6 +84,7 @@ import { WebcamModule } from 'ngx-webcam';
     MatProgressSpinnerModule,
     MaterialModule,
     WebcamModule,
+    FullCalendarModule,
     CoreModule.forRoot()
   ],
    providers: [

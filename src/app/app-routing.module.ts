@@ -22,6 +22,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './app-modules/core/services/auth-guard.service';
+import { RedirOpenComponent } from './redir-open/redir-open.component';
 
 // import { AuthGuard } from './app-modules/core/services/auth-guard.service';
 // import { RedirOpenComponent } from './redir-open/redir-open.component';
@@ -32,20 +33,18 @@ const routes: Routes = [
     redirectTo: 'redirin',
     pathMatch: 'full'
   },
-  // {
-  //   path: 'service',
-  //   component: ServiceComponent,
-  //   canActivate: [AuthGuard],
-  // },
-  // {
-  //   path:'redirin',
-  //   component: RedirOpenComponent
-  // },
-  // {
-  //   path: 'telemedicine',
-  //   canActivate: [AuthGuard],
-  //   loadChildren: './app-modules/scheduler/scheduler.module#SchedulerModule'
-  // }
+  {
+    path:'redirin',
+    component: RedirOpenComponent
+  },
+  {
+    path: 'telemedicine',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./app-modules/scheduler/scheduler.module').then(
+        (x) => x.SchedulerModule,
+      ),
+  },
 ];
 
 @NgModule({
