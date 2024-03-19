@@ -22,7 +22,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { ConfirmationService } from '../../../core/services/confirmation.service';
 import { SchedulerService } from '../../shared/services';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { SetLanguageComponent } from '../../../core/components/set-language.component';
 import { HttpServiceService } from 'src/app/app-modules/core/services/http-service.service';
@@ -43,8 +43,6 @@ export class ViewSmsTemplateComponent implements OnInit, DoCheck {
   fullSMSTemplate: any;
   ngOnInit() {
     this.getFullSMSTemplate();
-    // this.httpServiceService.currentLangugae$.subscribe(response =>this.currentLanguageSet = response);
-    // this.languageComponent.setLanguage();
   }
 
   getFullSMSTemplate() {

@@ -22,7 +22,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, ResolveStart, NavigationCancel, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { SpinnerService } from './app-modules/core/services/spinner.service';
-// import { SpinnerService } from './app-modules/core/services/spinner.service';
 
 @Component({
   selector: 'app-root',

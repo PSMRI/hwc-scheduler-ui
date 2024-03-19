@@ -23,11 +23,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-// import { Http } from '@angular/http';
-
-// import { environment } from 'environments/environment';
-
-// import { Observable, BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
 export class BeneficiaryDetailsService {
@@ -50,7 +45,6 @@ export class BeneficiaryDetailsService {
 
   getBeneficiaryImage(beneficiaryRegID: string) {
     return this.http.post(environment.getBeneficiaryImage, { beneficiaryRegID: beneficiaryRegID })
-      // .map(res => res.json().data);
   }
 
   reset() {

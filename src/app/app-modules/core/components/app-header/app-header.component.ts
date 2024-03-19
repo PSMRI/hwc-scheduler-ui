@@ -39,16 +39,8 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
   @ViewChild('activeReport')
   private activeReport!: RouterLinkActive;
 
-  // @Input('isDarkTheme')
-  // isDarkTheme: Boolean;
-
   @Input()
   showRoles!: boolean;
-
-  // @Output()
-  // dark: EventEmitter <Boolean> = new EventEmitter<Boolean>();
-
-  // Language Selection
   language_file_path: any = "./assets/";
   app_language: any = "English";
   currentLanguageSet: any;

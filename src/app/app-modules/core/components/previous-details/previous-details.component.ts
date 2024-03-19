@@ -33,7 +33,6 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class PreviousDetailsComponent implements OnInit, DoCheck {
   dataList: any = [];
-  // filteredDataList = [];
   filteredDataList = new MatTableDataSource<any>();
   columnList: any[] = [];
   currentLanguageSet: any;

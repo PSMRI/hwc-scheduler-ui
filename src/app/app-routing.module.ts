@@ -24,9 +24,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthGuard } from './app-modules/core/services/auth-guard.service';
 import { RedirOpenComponent } from './redir-open/redir-open.component';
 
-// import { AuthGuard } from './app-modules/core/services/auth-guard.service';
-// import { RedirOpenComponent } from './redir-open/redir-open.component';
-
 const routes: Routes = [
   {
     path: '',

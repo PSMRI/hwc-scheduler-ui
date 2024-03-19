@@ -20,12 +20,8 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 import { NgModule } from '@angular/core';
-
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { RedirOpenComponent } from './redir-open/redir-open.component';
-
-// Import custom route module....
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './app-modules/core/core.module';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
@@ -85,6 +81,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     MaterialModule,
     WebcamModule,
     FullCalendarModule,
+    // FullCalendarComponent,
     CoreModule.forRoot()
   ],
    providers: [
@@ -94,9 +91,6 @@ import { FullCalendarModule } from '@fullcalendar/angular';
       useClass: HttpInterceptorService,
       multi: true,
     },
-   
-    
-    
   ],
   bootstrap: [AppComponent]
 })

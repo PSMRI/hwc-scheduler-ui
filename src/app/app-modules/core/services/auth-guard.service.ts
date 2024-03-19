@@ -36,9 +36,6 @@ export class AuthGuard implements CanActivate {
     private route: ActivatedRoute) {
       this.fetchLanguageResponse();
      }
-  // ngDoCheck(): void {
-  //   throw new Error('Method not implemented.');
-  // }
 
   // For setting language
   canActivate(route: any, state: any) {
@@ -52,19 +49,6 @@ export class AuthGuard implements CanActivate {
       return false;
     }
   }
-
-  // canActivateChild() {
-  //   if (sessionStorage.getItem('isAuthenticated'))
-  //     return true;
-  //   else {
-  //     this.router.navigate(['/login']);
-  //   }
-  // }
-
-  // AV40085804 27/09/2021 Integrating Multilingual Functionality -----Start-----
-  // ngDoCheck() {
-  //   this.fetchLanguageResponse();
-  // }
 
   fetchLanguageResponse() {
     this.languageComponent = new SetLanguageComponent(this.httpServiceService);
