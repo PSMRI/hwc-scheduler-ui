@@ -85,7 +85,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     CoreModule.forRoot()
   ],
    providers: [
-    HttpClient,
+    HttpInterceptorService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
