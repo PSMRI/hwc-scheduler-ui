@@ -19,46 +19,9 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-// import { NgModule, ErrorHandler, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// import { HttpModule, Http, XHRBackend, RequestOptions } from '@angular/http';
-// import { RouterModule, Router } from '@angular/router';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-// import { MaterialModule } from './material.module';
-// import { Md2Module } from 'md2';
-// import { ChartsModule } from 'ng2-charts';
-// import { PaginationModule } from 'ngx-bootstrap/pagination';
-// import { FullCalendarModule } from 'ng-fullcalendar';
-
-// import { WebCamComponent } from 'ack-angular-webcam';
-// import { CommonDialogComponent } from './components/common-dialog/common-dialog.component';
-// import { CameraDialogComponent } from './components/camera-dialog/camera-dialog.component';
-// import { TextareaDialogComponent } from './components/textarea-dialog/textarea-dialog.component';
-// import { SpinnerComponent } from './components/spinner/spinner.component';
-// import { AppHeaderComponent } from './components/app-header/app-header.component';
-// import { PreviousDetailsComponent } from './components/previous-details/previous-details.component';
-// import { TextareaDialog } from './components/textarea-dialog/textarea-dialog.service';
-// import { SpinnerService } from './services/spinner.service';
-// import { ConfirmationService } from './services/confirmation.service';
-// import { CameraService } from './services/camera.service';
-// import { AuthGuard } from './services/auth-guard.service';
- import { AuthService } from './services/auth.service';
-// import { GlobalErrorHandler } from './services/global-error-handler.service';
-// import { BeneficiaryDetailsService } from './services/beneficiary-details.service';
-
-// import { myEmail } from './directives/email/myEmail.directive';
-// import { myMobileNumber } from './directives/MobileNumber/myMobileNumber.directive';
-// import { myName } from './directives/name/myName.directive';
-// import { myPassword } from './directives/password/myPassword.directive';
-// import { StringValidator } from './directives/stringValidator.directive';
-// import { NumberValidator } from './directives/numberValidator.directive';
-// import { DisableFormControlDirective } from './directives/disableFormControl.directive';
-// import { NullDefaultValueDirective } from './directives/null-default-value.directive';
-// import { ShowCommitAndVersionDetailsComponent } from './components/show-commit-and-version-details/show-commit-and-version-details.component'
-// import { CanDeactivateGuardService } from './services/can-deactivate-guard.service';
+import { AuthService } from './services/auth.service';
 import { HttpServiceService } from './services/http-service.service';
-// import { SetLanguageComponent } from './components/set-language.component';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
@@ -94,6 +57,24 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { WebcamModule } from 'ngx-webcam';
 import { NgChartsModule } from 'ng2-charts';
+import { myEmailDirective } from './directives/email/myEmail.directive';
+import { MyMobileNumberDirective } from './directives/MobileNumber/myMobileNumber.directive';
+import { myNameDirective } from './directives/name/myName.directive';
+import { myPasswordDirective } from './directives/password/myPassword.directive';
+import { DisableFormControlDirective } from './directives/disableFormControl.directive';
+import { NullDefaultValueDirective } from './directives/null-default-value.directive';
+import { NumberValidatorDirective } from './directives/numberValidator.directive';
+import { StringValidatorDirective } from './directives/stringValidator.directive';
+import { AppHeaderComponent } from './components/app-header/app-header.component';
+import { ShowCommitAndVersionDetailsComponent } from './components/show-commit-and-version-details/show-commit-and-version-details.component';
+import { PreviousDetailsComponent } from './components/previous-details/previous-details.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SetLanguageComponent } from './components/set-language.component';
+import { TextareaDialogComponent } from './components/textarea-dialog/textarea-dialog.component';
+import { TextareaDialog } from './components/textarea-dialog/textarea-dialog.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { FullCalendarModule } from '@fullcalendar/angular';
+
 
 
 @NgModule({
@@ -124,50 +105,55 @@ import { NgChartsModule } from 'ng2-charts';
     MatProgressSpinnerModule,
     MatGridListModule,
     WebcamModule,
+    MatSidenavModule,
     NgChartsModule
-    // NgChartsModule
-    // PaginationModule.forRoot()
   ],
   declarations: [
     // WebCamComponent,
     CommonDialogComponent,
     CameraDialogComponent,
-    // TextareaDialogComponent,
-    // SpinnerComponent,
+    TextareaDialogComponent,
+    SpinnerComponent,
     AppFooterComponent,
-    // SetLanguageComponent,
-    // AppHeaderComponent,
-    // PreviousDetailsComponent,
-    // ShowCommitAndVersionDetailsComponent,
-    // myEmail, myMobileNumber, myName, myPassword, StringValidator, NullDefaultValueDirective, NumberValidator, DisableFormControlDirective
+    SetLanguageComponent,
+    AppHeaderComponent,
+    PreviousDetailsComponent,
+    ShowCommitAndVersionDetailsComponent,
+    myEmailDirective,
+    MyMobileNumberDirective,
+    myNameDirective,
+    myPasswordDirective,
+    DisableFormControlDirective,
+    NullDefaultValueDirective,
+    NumberValidatorDirective,
+    StringValidatorDirective 
   ],
   exports: [
-    // RouterModule,
-    // FormsModule,
-    // ReactiveFormsModule,
-    // MaterialModule,
-    // Md2Module,
-    // SetLanguageComponent,
-       CommonDialogComponent,
-       CameraDialogComponent,
-    // TextareaDialogComponent,
-    // SpinnerComponent,
-      AppFooterComponent,
-    // AppHeaderComponent,
-    // PreviousDetailsComponent,
-    // PaginationModule,
-    // FullCalendarModule,ShowCommitAndVersionDetailsComponent,
-    // myEmail, myMobileNumber, myName, myPassword, DisableFormControlDirective, StringValidator, NumberValidator, NullDefaultValueDirective
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    SetLanguageComponent,
+    CommonDialogComponent,
+    CameraDialogComponent,
+    TextareaDialogComponent,
+    SpinnerComponent,
+    AppFooterComponent,
+    AppHeaderComponent,
+    PreviousDetailsComponent,
+    FullCalendarModule,
+    ShowCommitAndVersionDetailsComponent,
+    myEmailDirective,
+    MyMobileNumberDirective,
+    myNameDirective,
+    myPasswordDirective,
+    myPasswordDirective,
+    DisableFormControlDirective,
+    NullDefaultValueDirective,
+    NumberValidatorDirective,
+    StringValidatorDirective
+    
   ],
-  //  entryComponents: [
-      //  CommonDialogComponent,
-  //   CameraDialogComponent,
-  //   TextareaDialogComponent,
-  //   SpinnerComponent,
-  //   SetLanguageComponent,
-  //   PreviousDetailsComponent,
-  //   ShowCommitAndVersionDetailsComponent
-  // ]
 })
 export class CoreModule {
 
@@ -182,16 +168,11 @@ export class CoreModule {
         BeneficiaryDetailsService,
         HttpInterceptorService,
         HttpServiceService,
-        // TextareaDialog,
+        TextareaDialog,
         AuthGuard,
         AuthService,
         SpinnerService,
         CanDeactivateGuardService,
-        // {
-        //   // provide: Http,
-        //   // useFactory: HttpInterceptorFactory,
-        //   // deps: [XHRBackend, RequestOptions, Router, SpinnerService, ConfirmationService]
-        // }
       ]
     };
   }

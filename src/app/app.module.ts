@@ -20,12 +20,8 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 import { NgModule } from '@angular/core';
-
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { RedirOpenComponent } from './redir-open/redir-open.component';
-
-// Import custom route module....
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './app-modules/core/core.module';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
@@ -51,11 +47,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AppComponent } from './app.component';
 import { WebcamModule } from 'ngx-webcam';
+import { RedirOpenComponent } from './redir-open/redir-open.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    // RedirOpenComponent
+    RedirOpenComponent
   ],
    imports: [
     BrowserModule,
@@ -82,18 +80,17 @@ import { WebcamModule } from 'ngx-webcam';
     MatProgressSpinnerModule,
     MaterialModule,
     WebcamModule,
+    FullCalendarModule,
+    // FullCalendarComponent,
     CoreModule.forRoot()
   ],
    providers: [
-    HttpClient,
+    HttpInterceptorService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpInterceptorService,
       multi: true,
     },
-   
-    
-    
   ],
   bootstrap: [AppComponent]
 })

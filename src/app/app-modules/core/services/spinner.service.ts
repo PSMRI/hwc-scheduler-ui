@@ -21,7 +21,6 @@
 */
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
-// import { Subject } from 'rxjs/Subject';
 
 export interface SpinnerState {
   show: boolean;
@@ -37,7 +36,7 @@ export class SpinnerService {
 
   show() {
     this.temp.push(true);
-    if (this.temp.length == 1) {
+    if (this.temp.length === 1) {
       this.spinnerSubject.next(<SpinnerState>{ show: true });
     }
   }
@@ -46,7 +45,7 @@ export class SpinnerService {
     if (this.temp.length > 0)
       this.temp.pop();
 
-    if (this.temp.length == 0)
+    if (this.temp.length === 0)
       this.spinnerSubject.next(<SpinnerState>{ show: false });
   }
 

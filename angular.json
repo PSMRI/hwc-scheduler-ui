@@ -48,7 +48,7 @@
                 }
               ],
               "outputHashing": "all",
-              "optimization": false
+              "optimization": true
             },
             "development": {
               "buildOptimizer": false,

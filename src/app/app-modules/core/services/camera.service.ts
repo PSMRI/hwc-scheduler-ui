@@ -19,15 +19,11 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-// import { Observable } from 'rxjs/Rx';
 import { DOCUMENT } from '@angular/common';
-// import { CameraDialogComponent } from '../components/camera-dialog/camera-dialog.component';
-// import { MdDialogRef, MdDialog, MdDialogConfig } from '@angular/material';
 import { Injectable, ViewContainerRef, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CameraDialogComponent } from '../components/camera-dialog/camera-dialog.component';
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
-// import { DOCUMENT } from '@angular/platform-browser';
 
 @Injectable()
 export class CameraService {

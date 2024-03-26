@@ -44,7 +44,6 @@ export class AppFooterComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.today = new Date();
     this.year = this.today.getFullYear();
-    // this.fetchLanguageResponse();
     console.log('inside footer',this.year);
     
       setInterval(() => {

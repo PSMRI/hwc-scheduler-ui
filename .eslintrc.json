@@ -30,12 +30,13 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-          
+
         ],
         "@typescript-eslint/no-explicit-any": 0,
         "@typescript-eslint/no-empty-function": 0,
         "@typescript-eslint/no-unused-vars": 0,
-        "@angular-eslint/template/click-events-have-key-events": 0
+        "@angular-eslint/template/click-events-have-key-events": 0,
+        "eqeqeq": 1
       }
     },
     {
@@ -44,9 +45,17 @@
       ],
       "extends": [
         "plugin:@angular-eslint/template/recommended",
-        "plugin:@angular-eslint/template/accessibility"
+        "plugin:@angular-eslint/template/accessibility",
+        "plugin:prettier/recommended"
       ],
-      "rules": {}
+      "rules": {
+        "prettier/prettier": [
+          "error",
+          {
+            "parser": "angular"
+          }
+        ]
+      }
     }
   ]
 }
