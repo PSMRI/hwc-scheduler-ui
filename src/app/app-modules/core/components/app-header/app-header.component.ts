@@ -96,12 +96,13 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
   }
 
   fetchLanguageSet() {
-    this.httpServiceService.fetchLanguageSet().subscribe(languageRes => {
-      this.languageArray = languageRes;
-      this.getLanguage();
-    })
-    console.log("language array" + this.languageArray);
-
+    this.httpServiceService.fetchLanguageSet().subscribe((languageRes: any) => {
+      if (languageRes && Array.isArray(languageRes.data)) {
+        this.languageArray = languageRes.data;
+        this.getLanguage();
+      }
+    });
+    console.log('language array' + this.languageArray);
   }
 
   changeLanguage(language: any) {
@@ -210,9 +211,7 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
 
   redirectToSpecialistWorklist() {
     const returnUrl: any = sessionStorage.getItem('tm-return');
-    this.router.navigateByUrl(returnUrl);
-    // let returnUrl = sessionStorage.getItem('tm-return');
-    // window.location.href = returnUrl;
+    window.location.href = returnUrl;
   }
 
   returnToMMU: any;
@@ -221,11 +220,11 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
     this.auth.logout().subscribe({
       next: (res: any) => {
         this.auth.removeExternalSessionData();
-        this.router.navigateByUrl(loginUrl);
+        window.location.href = loginUrl;
       },
       error: (error: any) => {
         this.auth.removeExternalSessionData();
-        this.router.navigateByUrl(loginUrl);
+        window.location.href = loginUrl;
       },
     });
   }

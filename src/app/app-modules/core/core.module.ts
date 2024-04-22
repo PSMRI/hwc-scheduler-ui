@@ -22,7 +22,7 @@
 import { CommonModule } from '@angular/common';
 import { AuthService } from './services/auth.service';
 import { HttpServiceService } from './services/http-service.service';
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import { LOCALE_ID, ModuleWithProviders, NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Router, RouterModule } from '@angular/router';
 import { ConfirmationService } from './services/confirmation.service';
@@ -74,9 +74,8 @@ import { TextareaDialogComponent } from './components/textarea-dialog/textarea-d
 import { TextareaDialog } from './components/textarea-dialog/textarea-dialog.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FullCalendarModule } from '@fullcalendar/angular';
-
-
-
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+const lang = 'en-US';
 @NgModule({
   imports: [
     HttpClientModule,
@@ -106,7 +105,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     MatGridListModule,
     WebcamModule,
     MatSidenavModule,
-    NgChartsModule
+    NgChartsModule,
+    NgxMatTimepickerModule.setLocale(lang),
   ],
   declarations: [
     // WebCamComponent,
@@ -163,6 +163,7 @@ export class CoreModule {
     return {
       ngModule: CoreModule,
       providers: [
+        { provide: LOCALE_ID, useValue: lang },
         ConfirmationService,
         CameraService,
         BeneficiaryDetailsService,

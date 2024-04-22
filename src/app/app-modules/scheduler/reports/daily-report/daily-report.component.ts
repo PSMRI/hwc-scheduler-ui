@@ -1,33 +1,32 @@
 /*
-* AMRIT – Accessible Medical Records via Integrated Technology 
-* Integrated EHR (Electronic Health Records) Solution 
-*
-* Copyright (C) "Piramal Swasthya Management and Research Institute" 
-*
-* This file is part of AMRIT.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see https://www.gnu.org/licenses/.
-*/
+ * AMRIT – Accessible Medical Records via Integrated Technology
+ * Integrated EHR (Electronic Health Records) Solution
+ *
+ * Copyright (C) "Piramal Swasthya Management and Research Institute"
+ *
+ * This file is part of AMRIT.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
 import { Component, DoCheck, OnInit } from '@angular/core';
-import {  FormBuilder, FormGroup } from '@angular/forms';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { SchedulerService } from '../../shared/services/scheduler.service';
 import { ConfirmationService } from '../../../core/services/confirmation.service';
 import { SetLanguageComponent } from '../../../core/components/set-language.component';
 import { HttpServiceService } from 'src/app/app-modules/core/services/http-service.service';
 import * as ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
+import * as saveAs from 'file-saver';
 
 declare global {
   interface Navigator {
@@ -38,26 +37,27 @@ declare global {
 @Component({
   selector: 'app-daily-report',
   templateUrl: './daily-report.component.html',
-  styleUrls: ['./daily-report.component.css']
+  styleUrls: ['./daily-report.component.css'],
 })
 export class DailyReportComponent implements OnInit, DoCheck {
-
   dailyReportForm!: FormGroup;
 
   languageComponent!: SetLanguageComponent;
   currentLanguageSet: any;
-  criteriaHead: any;
+
   constructor(
     private formBuilder: FormBuilder,
     private schedulerService: SchedulerService,
     public httpServiceService: HttpServiceService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+  ) {}
 
   providerServiceMapID: any;
   userID: any;
-  dailyReportList: any = [];
+  dailyReportList = [];
   today!: Date;
   maxEndDate!: Date;
+  criteriaHead: any;
 
   ngOnInit() {
     this.providerServiceMapID = localStorage.getItem('tm-providerServiceMapID');
@@ -68,19 +68,18 @@ export class DailyReportComponent implements OnInit, DoCheck {
     this.maxEndDate = new Date();
     this.today = new Date();
     this.maxEndDate.setDate(this.today.getDate() - 1);
-    
   }
   createDailyReportForm() {
     this.dailyReportForm = this.formBuilder.group({
       fromDate: null,
-    })
+    });
   }
   get fromDate() {
     return this.dailyReportForm.controls['fromDate'].value;
   }
 
-  downloadReport(downloadFlag: any) {
-    if (downloadFlag === true) {
+  downloadReport(downloadFlag: boolean) {
+    if (downloadFlag) {
       this.setDate();
     }
   }
@@ -98,26 +97,34 @@ export class DailyReportComponent implements OnInit, DoCheck {
 
   searchReport(fromDate: any) {
     const reqObjForDailyReport = {
-      "fromDate": new Date(fromDate.valueOf() - 1 * fromDate.getTimezoneOffset() * 60 * 1000),
-      "providerServiceMapID": this.providerServiceMapID,
-      "userID": this.userID
-    }
-    this.schedulerService.getDailyReport(reqObjForDailyReport).subscribe((response: any) => {
-      console.log("Json data of response: ", JSON.stringify(response, null, 4));
-      if (response.statusCode === 200) {
-        this.dailyReportList = response.data;
-        this.createSearchCriteria();
-      } else {
-        this.confirmationService.alert(response.errorMessage, 'error');
-      }
-    }, (err) => {
-      this.confirmationService.alert(err, 'error');
-    })
+      fromDate: new Date(
+        fromDate.valueOf() - 1 * fromDate.getTimezoneOffset() * 60 * 1000,
+      ),
+      providerServiceMapID: this.providerServiceMapID,
+      userID: this.userID,
+    };
+    this.schedulerService.getDailyReport(reqObjForDailyReport).subscribe({
+      next: (response: any) => {
+        console.log(
+          'Json data of response: ',
+          JSON.stringify(response, null, 4),
+        );
+        if (response.statusCode === 200) {
+          this.dailyReportList = response.data;
+          this.createSearchCriteria();
+        } else {
+          this.confirmationService.alert(response.errorMessage, 'error');
+        }
+      },
+      error: (err: any) => {
+        this.confirmationService.alert(err, 'error');
+      },
+    });
   }
 
   createSearchCriteria() {
     const criteria: any = [];
-    criteria.push({ 'Filter_Name': 'Date', 'value': this.fromDate });
+    criteria.push({ Filter_Name: 'Date', value: this.fromDate });
     this.exportToxlsx(criteria);
   }
 
@@ -145,11 +152,11 @@ export class DailyReportComponent implements OnInit, DoCheck {
         }
         return obj;
       });
-      if(array.length !== 0){
+      if (array.length !== 0) {
         const head = Object.keys(array[0]);
         console.log('head', head);
-        const wb_name = "Daily Report";
-      let i = 65; // starting from 65 since it is the ASCII code of 'A'.
+        const wb_name = 'Daily Report';
+        let i = 65; // starting from 65 since it is the ASCII code of 'A'.
         let count = 0;
         while (i < head.length + 65) {
           let j;
@@ -218,37 +225,36 @@ export class DailyReportComponent implements OnInit, DoCheck {
             document.body.removeChild(link);
           }
         });
-       }
-       this.confirmationService.alert(
-        this.currentLanguageSet.monthlyReportdownloaded,
+      }
+      this.confirmationService.alert(
+        this.currentLanguageSet.dailyReportdownloaded,
         'success',
       );
+    } else {
+      this.confirmationService.alert(this.currentLanguageSet.norecordfound);
     }
-    else {
-      this.confirmationService.alert(
-        this.currentLanguageSet.norecordfound,
-      );
-    }
-    
   }
 
   modifyHeader(headers: any, i: any) {
     let modifiedHeader: string;
-    modifiedHeader = headers[i - 65].toString().replace(/([A-Z])/g, ' $1').trim();
-    modifiedHeader = modifiedHeader.charAt(0).toUpperCase() + modifiedHeader.substr(1);
-    //console.log(modifiedHeader);
-    return modifiedHeader.replace(/I D/g, "ID");
+    modifiedHeader = headers[i - 65]
+      .toString()
+      .replace(/([A-Z])/g, ' $1')
+      .trim();
+    modifiedHeader =
+      modifiedHeader.charAt(0).toUpperCase() + modifiedHeader.slice(1);
+    return modifiedHeader.replace(/I D/g, 'ID');
   }
 
   //AN40085822 27/9/2021 Integrating Multilingual Functionality --Start--
-  ngDoCheck(){
+  ngDoCheck() {
     this.fetchLanguageResponse();
   }
 
   fetchLanguageResponse() {
     this.languageComponent = new SetLanguageComponent(this.httpServiceService);
     this.languageComponent.setLanguage();
-    this.currentLanguageSet = this.languageComponent.currentLanguageObject; 
+    this.currentLanguageSet = this.languageComponent.currentLanguageObject;
   }
   //--End--
 }

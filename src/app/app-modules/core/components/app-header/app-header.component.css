@@ -177,3 +177,33 @@ md-menu {
   /* width: 100%; */
   display: inline-block;
 }
+.helpAlign {
+  font-size: 26px;
+  vertical-align: middle;
+  text-align: center;
+  padding: 0px;
+  color: rgba(245, 245, 245, 0.877);
+  margin-top: 4px;
+}
+
+@media (max-width: 500px) {
+  .container-fluid .navbar-collapse,
+  .container-fluid .navbar-header {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+}
+
+@media (max-width: 760px) {
+  .navbar-brand {
+    padding: 5px 15px;
+  }
+}
+
+.alignDropDown {
+  margin-top: 3px;
+}
+.alignWord {
+  margin: 8px 10px;
+
+}

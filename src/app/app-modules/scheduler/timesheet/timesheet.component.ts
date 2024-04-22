@@ -1,24 +1,24 @@
 /*
-* AMRIT – Accessible Medical Records via Integrated Technology 
-* Integrated EHR (Electronic Health Records) Solution 
-*
-* Copyright (C) "Piramal Swasthya Management and Research Institute" 
-*
-* This file is part of AMRIT.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see https://www.gnu.org/licenses/.
-*/
+ * AMRIT – Accessible Medical Records via Integrated Technology
+ * Integrated EHR (Electronic Health Records) Solution
+ *
+ * Copyright (C) "Piramal Swasthya Management and Research Institute"
+ *
+ * This file is part of AMRIT.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
 import {
   Component,
   OnInit,
@@ -36,8 +36,11 @@ import { SchedulerService } from '../shared/services/scheduler.service';
 import { ConfirmationService } from '../../core/services/confirmation.service';
 import { SetLanguageComponent } from '../../core/components/set-language.component';
 import { HttpServiceService } from '../../core/services/http-service.service';
-import { Options } from 'html2canvas';
-import { FullCalendarComponent } from '@fullcalendar/angular';
+import { CalendarOptions } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import { DateTime } from 'ts-luxon';
+import * as moment from 'moment';
+import { DateClickArg } from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-timesheet',
@@ -47,10 +50,7 @@ import { FullCalendarComponent } from '@fullcalendar/angular';
 export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   @Input()
   getChangedTab!: boolean;
-
-  @ViewChild(FullCalendarComponent) ucCalendar!: FullCalendarComponent;
-  calendarOptions: Options | null = null;
-
+  calendarOptions!: CalendarOptions;
   availabiltyForm!: FormGroup;
   timeList: any[] = [];
   dayList: any[] = [];
@@ -67,6 +67,13 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
 
   languageComponent!: SetLanguageComponent;
   currentLanguageSet: any;
+  maxTime: DateTime = DateTime.local().set({
+    hour: 16,
+  });
+  minTime: DateTime = DateTime.local().set({
+    hour: 14,
+  });
+  @ViewChild('timepicker') timepicker: any;
 
   constructor(
     private fb: FormBuilder,
@@ -85,7 +92,7 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   ngOnChanges() {
     if (this.getChangedTab) {
       this.initializeCalender();
-      this.calendarOptions = null;
+      // this.calendarOptions = null;
     }
   }
 
@@ -103,8 +110,11 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   }
 
   getUserDesignation() {
+    console.log('this.route.params', this.route.params);
     let userInfo;
+    console.log('Hi Parth');
     this.route.params.subscribe((param) => {
+      console.log('param', param);
       this.designation = param['designation'];
       if (this.designation === 'TC Specialist') {
         userInfo = { userID: localStorage.getItem('tm-userID') };
@@ -131,12 +141,19 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
     const fromDate = new Date(availabilityFormValue.configuredFromDate);
     fromDate.setHours(5, 30, 0, 0);
     availabilityFormValue.configuredFromDate = fromDate;
-
-    const fromTime = new Date(availabilityFormValue.configuredFromTime);
-    const temp1 = new Date(availabilityFormValue.configuredFromDate);
-    temp1.setHours(fromTime.getHours() + 5, fromTime.getMinutes() + 30);
-    availabilityFormValue.configuredFromTime = temp1.toJSON();
-
+    console.log('fromDate', fromDate);
+    const fromTime = availabilityFormValue.configuredFromTime;
+    console.log('fromTime', fromTime);
+    const combinedDateTime = moment(
+      `${fromDate.toISOString().split('T')[0]} ${fromTime}`,
+      'YYYY-MM-DD hh:mm A',
+    );
+    console.log('combinedDateTime', combinedDateTime);
+    const formattedFromTime = combinedDateTime.format(
+      'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
+    );
+    console.log('formattedFromTime', formattedFromTime);
+    availabilityFormValue.configuredFromTime = formattedFromTime;
     const toDate = new Date(availabilityFormValue.configuredToDate);
     toDate.setHours(5, 30, 0, 0);
     availabilityFormValue.configuredToDate = toDate;
@@ -147,25 +164,41 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
     availabilityFormValue.userID = this.selectedSpecialist.userID;
 
     if (availabilityFormValue.isAvailability === 'true') {
-      const toTime = new Date(availabilityFormValue.configuredToTime);
-      const temp2 = new Date(availabilityFormValue.configuredToDate);
-      temp2.setHours(toTime.getHours() + 5, toTime.getMinutes() + 30);
-      availabilityFormValue.configuredToTime = temp2.toJSON();
+      const toTime = availabilityFormValue.configuredToTime;
+      console.log('toTime', toTime);
+      const combinedDateToTime = moment(
+        `${toDate.toISOString().split('T')[0]} ${toTime}`,
+        'YYYY-MM-DD hh:mm A',
+      );
+      console.log('combinedDateTime', combinedDateToTime);
+      const formattedToTime = combinedDateToTime.format(
+        'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
+      );
+      console.log('formattedToTime', formattedToTime);
+      availabilityFormValue.configuredToTime = formattedToTime;
       this.markAvailability(availabiltyForm, availabilityFormValue);
     } else {
-      const toTime = new Date(availabilityFormValue.configuredToTime);
-      const temp3 = new Date(availabilityFormValue.configuredFromDate);
-      temp3.setHours(toTime.getHours() + 5, toTime.getMinutes() + 30);
-      availabilityFormValue.configuredToTime = temp3.toJSON();
-
+      const toTime = availabilityFormValue.configuredToTime;
+      console.log('toTimeelse', toTime);
+      const combinedDateToTime = moment(
+        `${fromDate.toISOString().split('T')[0]} ${toTime}`,
+        'YYYY-MM-DD hh:mm A',
+      );
+      console.log('combinedDateToTimeelse', combinedDateToTime);
+      const formattedToTime = combinedDateToTime.format(
+        'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
+      );
+      console.log('formattedToTimeelse', formattedToTime);
+      availabilityFormValue.configuredToTime = formattedToTime;
       availabilityFormValue.ExcludeDays = undefined;
       availabilityFormValue.toDate = undefined;
       this.markNonAvailability(availabiltyForm, availabilityFormValue);
     }
   }
+
   markAvailability(availabiltyForm: FormGroup, availabilityFormValue: any) {
-    this.schedulerService.markAvailability(availabilityFormValue).subscribe({
-      next: (res: any) => {
+    this.schedulerService.markAvailability(availabilityFormValue).subscribe(
+      (res: any) => {
         if (res.statusCode === 200 && res.data) {
           this.confirmationService.alert(
             this.currentLanguageSet.markedSuccessfully,
@@ -173,25 +206,26 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
           );
           availabiltyForm.reset();
           availabiltyForm.markAsPristine();
-          this.calendarOptions = null;
+          // this.calendarOptions = undefined;
           this.initializeCalender();
+          // this.initDayList();
+          // this.ucCalendar.fullCalendar('removeEventSources');
+          // this.getMonthEvents(new Date());
         } else {
           this.confirmationService.alert(res.errorMessage, 'warn');
         }
       },
-      error: (error: any) => {
-        if (error && error.error) {
-          this.confirmationService.alert(error.error, 'warn');
-        }
+      (error) => {
+        this.confirmationService.alert(error, 'warn');
       },
-    });
+    );
   }
 
   markNonAvailability(availabiltyForm: any, nonAvailabilityFormValue: any) {
     this.schedulerService
       .markNonAvailability(nonAvailabilityFormValue)
-      .subscribe({
-        next: (res: any) => {
+      .subscribe(
+        (res: any) => {
           if (res.statusCode === 200 && res.data) {
             this.confirmationService.alert(
               this.currentLanguageSet.markedSuccessfully,
@@ -199,39 +233,72 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
             );
             availabiltyForm.reset();
             availabiltyForm.markAsPristine();
+            this.initializeCalender();
             this.initDayList();
-            this.ucCalendar.getApi().removeAllEventSources();
+            // this.ucCalendar.fullCalendar('removeEventSources');
             this.getMonthEvents(new Date());
           } else {
             this.confirmationService.alert(res.errorMessage, 'warn');
           }
         },
-        error: (error: any) => {
+        (error) => {
           this.confirmationService.alert(error, 'warn');
         },
-      });
+      );
+  }
+  eventClicked(calDate: any) {
+
+    console.log(calDate);
   }
 
-  clickButton(model: any) {
-    const temp = model.data as Moment;
-    this.ucCalendar.getApi().removeAllEventSources();
-    this.getMonthEvents(temp.toDate());
+  // clickButton(model: any) {
+  //   console.log("HELLOWIPRO")
+  //   const action = model.buttonType;
+  //   const temp = model.data as Moment;
+  //   // this.ucCalendar.fullCalendar('removeEventSources');;
+  //   this.getMonthEvents(temp.toDate());
+  //   // const temp = model.data as Moment;
+  //   // this.ucCalendar.getApi().removeAllEventSources();
+  //   // this.getMonthEvents(temp.toDate());
+  // }
+  dateClick(event: any) {
+    console.log("HELLOWIPRO")
+    const temp = event.date;
+    console.log("wiprpdate", temp);
+    // this.getMonthEvents(temp.toDate());
   }
+
 
   initCalender(eventSources?: any) {
+    console.log('eventSources###', eventSources);
     this.calendarOptions = {
-      themeSystem: 'bootstrap3',
-      editable: false,
+      themeSystem: 'bootstrap5',
+      plugins: [dayGridPlugin],
+      initialView: 'dayGridMonth',
+      weekends: true,
+      editable: true,
       eventLimit: true,
       header: {
         left: 'prev,next',
         center: 'title',
         right: 'month,listMonth',
       },
+      eventDidMount: function (info: any) {
+        console.log('evenrednder', info);
+        if (info.backgroundColor === 'green') {
+          info.el.style.backgroundColor = 'green';
+          info.el.style.color = 'white';
+        } else {
+          info.el.style.backgroundColor = 'red';
+          info.el.style.color = 'white';
+        }
+      },
       displayEventEnd: true,
       displayEventTime: true,
+      timeZone: 'UTC',
       timeFormat: 'HH:mm',
       eventSources: eventSources || [],
+      // events: [{ title: 'Meeting', start: new Date() }],
     } as any;
   }
 
@@ -247,7 +314,7 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
           const eventSourceList = res.data;
           const eventSources = this.mapResponseToEventSources(eventSourceList);
           eventSources.forEach((eventSource) => {
-            this.ucCalendar.getApi().addEventSource(eventSource);
+            // this.ucCalendar.fullCalendar('addEventSource', eventSource);
           });
         } else {
           this.confirmationService.alert(res.errorMessage, 'warn');
@@ -264,7 +331,7 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   }
 
   getSpecialist() {
-    this.ucCalendar.getApi().removeAllEventSources();
+    //  this.ucCalendar.fullCalendar('removeEventSources');
     this.selectedSpecialist = undefined;
     this.availabiltyForm.reset();
 
@@ -301,6 +368,7 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
           start: yearMonthDay + 'T' + slot.fromTime + 'Z',
           end: yearMonthDay + 'T' + slot.toTime + 'Z',
         });
+        console.log('events', events);
         temp.push({ events, color });
       });
     });
@@ -430,8 +498,9 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
       configuredToTime: null,
     });
     if (this.isAvailability === 'true') {
-      const configuredToDateControl = this.availabiltyForm.get('configuredToDate');
-      if(configuredToDateControl){
+      const configuredToDateControl =
+        this.availabiltyForm.get('configuredToDate');
+      if (configuredToDateControl) {
         configuredToDateControl.clearValidators();
       }
     } else {
@@ -451,4 +520,3 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   }
   //--End--
 }
-

@@ -115,7 +115,7 @@ export class RedirOpenComponent implements OnInit {
             (previlege: any) => {
               if (
                 previlege.roles[0].serviceRoleScreenMappings[0]
-                  .providerServiceMapping.serviceID === 4
+                  .providerServiceMapping.serviceID === 9
               ) {
                 return previlege;
               }

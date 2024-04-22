@@ -1,34 +1,33 @@
 /*
-* AMRIT – Accessible Medical Records via Integrated Technology 
-* Integrated EHR (Electronic Health Records) Solution 
-*
-* Copyright (C) "Piramal Swasthya Management and Research Institute" 
-*
-* This file is part of AMRIT.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see https://www.gnu.org/licenses/.
-*/
+ * AMRIT – Accessible Medical Records via Integrated Technology
+ * Integrated EHR (Electronic Health Records) Solution
+ *
+ * Copyright (C) "Piramal Swasthya Management and Research Institute"
+ *
+ * This file is part of AMRIT.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
 import { Component, DoCheck, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { SchedulerService } from '../../shared/services/scheduler.service';
 import { ConfirmationService } from '../../../core/services/confirmation.service';
 import * as moment from 'moment';
 import { SetLanguageComponent } from '../../../core/components/set-language.component';
 import { HttpServiceService } from 'src/app/app-modules/core/services/http-service.service';
 import * as ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
+import * as saveAs from 'file-saver';
 
 declare global {
   interface Navigator {
@@ -39,25 +38,24 @@ declare global {
 @Component({
   selector: 'app-total-consultation-report',
   templateUrl: './total-consultation-report.component.html',
-  styleUrls: ['./total-consultation-report.component.css']
+  styleUrls: ['./total-consultation-report.component.css'],
 })
 export class TotalConsultationReportComponent implements OnInit, DoCheck {
-
   totalConsultationForm!: FormGroup;
 
-  languageComponent!: SetLanguageComponent; 
+  languageComponent!: SetLanguageComponent;
   currentLanguageSet: any;
-  
+
   constructor(
     private formBuilder: FormBuilder,
     private schedulerService: SchedulerService,
     public httpServiceService: HttpServiceService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+  ) {}
 
   providerServiceMapID: any;
   userID: any;
   totalConsultationList = [];
-
   today!: Date;
   minEndDate!: Date;
   maxEndDate!: Date;
@@ -73,13 +71,12 @@ export class TotalConsultationReportComponent implements OnInit, DoCheck {
     this.maxEndDate = new Date();
     this.today = new Date();
     this.maxEndDate.setDate(this.today.getDate() - 1);
-    
   }
   createTotalConsultationForm() {
     this.totalConsultationForm = this.formBuilder.group({
       fromDate: null,
       toDate: null,
-    })
+    });
   }
   get fromDate() {
     return this.totalConsultationForm.controls['fromDate'].value;
@@ -94,49 +91,68 @@ export class TotalConsultationReportComponent implements OnInit, DoCheck {
       this.minEndDate = new Date(this.fromDate);
     } else {
       this.totalConsultationForm.patchValue({
-        toDate: null
+        toDate: null,
       });
-      //(<FormGroup> this.totalConsultationForm.controls['toDate']).patchValue({ toDate: null });
-      if(this.fromDate !== undefined && this.fromDate !== null)
-      this.minEndDate = new Date(this.fromDate);
-      // this.totalConsultationForm.controls['toDate']).patchValue({
-      //   toDate: null
-      // })
+      if (this.fromDate !== undefined && this.fromDate !== null)
+        this.minEndDate = new Date(this.fromDate);
     }
   }
 
-  downloadReport(downloadFlag: any) {
-    if (downloadFlag === true) {
+  downloadReport(downloadFlag: boolean) {
+    if (downloadFlag) {
       this.searchReport();
     }
   }
 
   searchReport() {
     const reqObjForTotalConsultationReport = {
-      "providerServiceMapID": this.providerServiceMapID,
-      "userID": this.userID,
-      "fromDate": moment(this.fromDate).format("YYYY-MM-DD"),
-      "toDate": moment(this.toDate).format("YYYY-MM-DD")
-    }
-    console.log("reqObjForTotalConsultationReport", JSON.stringify(reqObjForTotalConsultationReport, null, 4));
+      fromDate: new Date(
+        this.fromDate.valueOf() -
+          1 * this.fromDate.getTimezoneOffset() * 60 * 1000,
+      ),
+      toDate: new Date(
+        this.toDate.valueOf() - 1 * this.toDate.getTimezoneOffset() * 60 * 1000,
+      ),
+      providerServiceMapID: this.providerServiceMapID,
+      userID: this.userID,
+      // fromDate: moment(this.fromDate).format('YYYY-MM-DD'),
+      // toDate: moment(this.toDate).format('YYYY-MM-DD'),
+    };
+    console.log(
+      'reqObjForTotalConsultationReport',
+      JSON.stringify(reqObjForTotalConsultationReport, null, 4),
+    );
 
-    this.schedulerService.getTotalConsultationReports(reqObjForTotalConsultationReport).subscribe((response: any) => {
-      console.log("Json data of response: ", JSON.stringify(response, null, 4));
-      if (response.statusCode === 200) {
-        this.totalConsultationList = response.data;
-        this.createSearchCriteria();
-      }
-      else {
-        this.confirmationService.alert(response.errorMessage, 'error');
-      }
-    }, (err) => {
-      this.confirmationService.alert(err, 'error');
-    })
+    this.schedulerService
+      .getTotalConsultationReports(reqObjForTotalConsultationReport)
+      .subscribe({
+        next: (response: any) => {
+          console.log(
+            'Json data of response: ',
+            JSON.stringify(response, null, 4),
+          );
+          if (response.statusCode === 200) {
+            this.totalConsultationList = response.data;
+            this.createSearchCriteria();
+          } else {
+            this.confirmationService.alert(response.errorMessage, 'error');
+          }
+        },
+        error: (err: any) => {
+          this.confirmationService.alert(err, 'error');
+        },
+      });
   }
   createSearchCriteria() {
     const criteria: any = [];
-    criteria.push({ 'Filter_Name': 'From Month', 'value': moment(this.fromDate).format("MMM-YY") });
-    criteria.push({ 'Filter_Name': 'To Month', 'value': moment(this.toDate).format("MMM-YY") });
+    criteria.push({
+      Filter_Name: 'From Month',
+      value: moment(this.fromDate).format('MMM-YY'),
+    });
+    criteria.push({
+      Filter_Name: 'To Month',
+      value: moment(this.toDate).format('MMM-YY'),
+    });
     this.exportToxlsx(criteria);
   }
   exportToxlsx(criteria: any) {
@@ -243,33 +259,34 @@ export class TotalConsultationReportComponent implements OnInit, DoCheck {
         });
       }
       this.confirmationService.alert(
-        this.currentLanguageSet.monthlyReportdownloaded,
+        this.currentLanguageSet.totalConsultationReportDownloaded,
         'success',
       );
     } else {
-      this.confirmationService.alert(
-        this.currentLanguageSet.norecordfound,
-      );
+      this.confirmationService.alert(this.currentLanguageSet.norecordfound);
     }
   }
 
-
-  modifyHeader(headers: any, i:any) {
+  modifyHeader(headers: any, i: any) {
     let modifiedHeader: string;
-    modifiedHeader = headers[i - 65].toString().replace(/([A-Z])/g, ' $1').trim();
-    modifiedHeader = modifiedHeader.charAt(0).toUpperCase() + modifiedHeader.substr(1);
-    return modifiedHeader.replace(/I D/g, "ID");
+    modifiedHeader = headers[i - 65]
+      .toString()
+      .replace(/([A-Z])/g, ' $1')
+      .trim();
+    modifiedHeader =
+      modifiedHeader.charAt(0).toUpperCase() + modifiedHeader.substring(1);
+    return modifiedHeader.replace(/I D/g, 'ID');
   }
 
   //AN40085822 27/9/2021 Integrating Multilingual Functionality --Start--
-  ngDoCheck(){
+  ngDoCheck() {
     this.fetchLanguageResponse();
   }
 
   fetchLanguageResponse() {
     this.languageComponent = new SetLanguageComponent(this.httpServiceService);
     this.languageComponent.setLanguage();
-    this.currentLanguageSet = this.languageComponent.currentLanguageObject; 
+    this.currentLanguageSet = this.languageComponent.currentLanguageObject;
   }
   //--End--
 }
