@@ -91,7 +91,6 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   ngOnChanges() {
     if (this.getChangedTab) {
       this.initializeCalender();
-      // this.calendarOptions = null;
     }
   }
 
@@ -121,7 +120,6 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
       } else {
         userInfo = { userID: localStorage.getItem('supervisor-specialistID') };
       }
-      // const date = new Date();
       this.selectedSpecialist = userInfo;
       this.schedulerService
         .getAllEvents(userInfo, date.getFullYear(), date.getMonth() + 1)
@@ -206,12 +204,7 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
           );
           availabiltyForm.reset();
           availabiltyForm.markAsPristine();
-          // this.calendarOptions = undefined;
-          // this.initializeCalender();
           this.getUserDesignation(date);
-          // this.initDayList();
-          // this.ucCalendar.fullCalendar('removeEventSources');
-          // this.getMonthEvents(new Date());
         } else {
           this.confirmationService.alert(res.errorMessage, 'warn');
         }
@@ -235,9 +228,7 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
             availabiltyForm.reset();
             availabiltyForm.markAsPristine();
             this.getUserDesignation(date);
-            // this.initializeCalender();
             this.initDayList();
-            // this.ucCalendar.fullCalendar('removeEventSources');
             this.getMonthEvents(new Date());
           } else {
             this.confirmationService.alert(res.errorMessage, 'warn');
@@ -251,17 +242,6 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   eventClicked(calDate: any) {
 
     console.log(calDate);
-  }
-
-  clickButton(model: any) {
-    console.log("HELLOWIPRO")
-    const action = model.buttonType;
-    const temp = model.data as Moment;
-    // this.ucCalendar.fullCalendar('removeEventSources');;
-    this.getMonthEvents(temp.toDate());
-    // const temp = model.data as Moment;
-    // this.ucCalendar.getApi().removeAllEventSources();
-    // this.getMonthEvents(temp.toDate());
   }
 
   initCalender(eventSources?: any) {
@@ -314,22 +294,11 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
       timeZone: 'UTC',
       timeFormat: 'HH:mm',
       eventSources: eventSources || [],
-      // events: [{ title: 'Meeting', start: new Date() }],
     } as any;
   }
   handleNavigation(startDate: string, endDate: string) {
-    console.log('Start DateParth:', startDate);
-    console.log('Start endDate:', endDate);
-    const temp = new Date(startDate);
-    const temp1 = new Date(endDate);
-
-    console.log('temp1:', temp1);
-    // const temp: any = startDate;
-    console.log('temp:', temp);
-    this.getMonthEvents(temp1);
-    // this.initializeCalender();
-    // console.log('End DateParth:', endDate);
-    // Call your method here with the startDate and endDate parameters
+    const tempEndDate = new Date(endDate);
+    this.getMonthEvents(tempEndDate);
    }
 
   getMonthEvents(date?: Date) {
@@ -344,7 +313,6 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
           const eventSourceList = res.data;
           const eventSources = this.mapResponseToEventSources(eventSourceList);
           eventSources.forEach((eventSource) => {
-            // this.ucCalendar.fullCalendar('addEventSource', eventSource);
           });
         } else {
           this.confirmationService.alert(res.errorMessage, 'warn');
@@ -361,7 +329,6 @@ export class TimesheetComponent implements OnInit, OnChanges, DoCheck {
   }
 
   getSpecialist() {
-    //  this.ucCalendar.fullCalendar('removeEventSources');
     this.selectedSpecialist = undefined;
     this.availabiltyForm.reset();
 
