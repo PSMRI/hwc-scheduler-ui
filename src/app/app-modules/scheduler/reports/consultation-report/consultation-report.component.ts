@@ -45,7 +45,6 @@ export class ConsultationReportComponent implements OnInit, DoCheck {
 
   languageComponent!: SetLanguageComponent;
   currentLanguageSet: any;
-
   constructor(
     private formBuilder: FormBuilder,
     public httpServiceService: HttpServiceService,

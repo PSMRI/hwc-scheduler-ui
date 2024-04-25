@@ -44,7 +44,6 @@ export class DailyReportComponent implements OnInit, DoCheck {
 
   languageComponent!: SetLanguageComponent;
   currentLanguageSet: any;
-
   constructor(
     private formBuilder: FormBuilder,
     private schedulerService: SchedulerService,
