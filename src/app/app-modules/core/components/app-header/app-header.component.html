@@ -72,19 +72,6 @@
             </span>
           </a>
         </li>
-        <!-- <li class="cursorPointer" style="margin: 6px 3px;">
-          <span
-            class="fa fa-question-circle helpAlign"
-            matTooltip="
-        {{ currentLanguageSet?.help }}"
-            alt="Help"
-            [matMenuTriggerFor]="knowAboutUs"
-          ></span>
-        </li> -->
-        <!-- <li class="cursorPointer" style="margin: 6px 3px;">
-          <span class="fa fa-question-circle helpAlign" matTooltip="
-          {{currentLanguageSet?.help}}" alt="Help" [matMenuTriggerFor]="knowAboutUs"></span>
-        </li> -->
         <li
           class="nav-item cursorPointer"
           *ngIf="isAuthenticated"
@@ -123,11 +110,6 @@
           <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events -->
           <a tabindex="{0}" (click)="getSwymedLogout()">
             <span class="logoutIcon"></span>
-            <!-- <span
-              style="color: #ffffff"
-              class="hidden-sm hidden-md hidden-lg"
-              >{{ currentLanguageSet?.logout }}</span
-            > -->
           </a>
         </li>
       </ul>
