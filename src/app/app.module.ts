@@ -19,7 +19,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -49,7 +49,8 @@ import { AppComponent } from './app.component';
 import { WebcamModule } from 'ngx-webcam';
 import { RedirOpenComponent } from './redir-open/redir-open.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+const lang = 'en-US';
 @NgModule({
   declarations: [
     AppComponent, 
@@ -82,6 +83,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     WebcamModule,
     FullCalendarModule,
     // FullCalendarComponent,
+    NgxMatTimepickerModule.setLocale(lang),
     CoreModule.forRoot()
   ],
    providers: [
@@ -91,6 +93,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
       useClass: HttpInterceptorService,
       multi: true,
     },
+    { provide: LOCALE_ID, useValue: lang },
   ],
   bootstrap: [AppComponent]
 })

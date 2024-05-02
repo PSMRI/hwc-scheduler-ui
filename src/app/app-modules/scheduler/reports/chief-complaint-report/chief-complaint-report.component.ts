@@ -1,33 +1,32 @@
 /*
-* AMRIT – Accessible Medical Records via Integrated Technology 
-* Integrated EHR (Electronic Health Records) Solution 
-*
-* Copyright (C) "Piramal Swasthya Management and Research Institute" 
-*
-* This file is part of AMRIT.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see https://www.gnu.org/licenses/.
-*/
+ * AMRIT – Accessible Medical Records via Integrated Technology
+ * Integrated EHR (Electronic Health Records) Solution
+ *
+ * Copyright (C) "Piramal Swasthya Management and Research Institute"
+ *
+ * This file is part of AMRIT.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-
 import { SchedulerService } from '../../shared/services/scheduler.service';
 import { ConfirmationService } from '../../../core/services/confirmation.service';
 import { SetLanguageComponent } from 'src/app/app-modules/core/components/set-language.component';
 import { HttpServiceService } from 'src/app/app-modules/core/services/http-service.service';
 import * as ExcelJS from 'exceljs';
-import { saveAs } from 'file-saver';
+import * as saveAs from 'file-saver';
 
 declare global {
   interface Navigator {
@@ -38,19 +37,20 @@ declare global {
 @Component({
   selector: 'app-chief-complaint-report',
   templateUrl: './chief-complaint-report.component.html',
-  styleUrls: ['./chief-complaint-report.component.css']
+  styleUrls: ['./chief-complaint-report.component.css'],
 })
 export class ChiefComplaintReportComponent implements OnInit, DoCheck {
-
   chiefComplaintForm!: FormGroup;
 
   languageComponent!: SetLanguageComponent;
   currentLanguageSet: any;
 
-  constructor(private formBuilder: FormBuilder, 
+  constructor(
+    private formBuilder: FormBuilder,
     public httpServiceService: HttpServiceService,
     private schedulerService: SchedulerService,
-    private confirmationService: ConfirmationService) { }
+    private confirmationService: ConfirmationService,
+  ) {}
 
   providerServiceMapID: any;
   userID: any;
@@ -58,6 +58,7 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
   minEndDate!: Date;
   maxDate: any;
   maxEndDate!: Date;
+  
   chiefComplaintRawData: any = [];
   dateOffset: any;
   criteriaHead: any;
@@ -68,7 +69,7 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
     this.createChiefComplaintForm();
     this.today = new Date();
 
-    this.dateOffset = (24 * 60 * 60 * 1000);
+    this.dateOffset = 24 * 60 * 60 * 1000;
     this.maxEndDate = new Date();
     this.maxEndDate.setDate(this.today.getDate() - 1);
     this.fetchLanguageResponse();
@@ -78,7 +79,7 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
     this.chiefComplaintForm = this.formBuilder.group({
       startDate: null,
       endDate: null,
-    })
+    });
   }
 
   get startDate() {
@@ -94,13 +95,13 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
 
     if (this.endDate === null) {
       this.minEndDate = new Date(this.startDate);
-      console.log("new Date(this.today.getDate() - 1);", new Date(this.today));
+      console.log('new Date(this.today.getDate() - 1);', new Date(this.today));
     } else {
       this.chiefComplaintForm.patchValue({
-        endDate: null
-      })
-      if(this.startDate !== undefined && this.startDate !== null)
-      this.minEndDate = new Date(this.startDate);
+        endDate: null,
+      });
+      if (this.startDate !== undefined && this.startDate !== null)
+        this.minEndDate = new Date(this.startDate);
     }
   }
 
@@ -118,28 +119,49 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
     endDate.setSeconds(59);
     endDate.setMilliseconds(0);
 
-    console.log("Data form value...", JSON.stringify(this.chiefComplaintForm.value));
+    console.log(
+      'Data form value...',
+      JSON.stringify(this.chiefComplaintForm.value),
+    );
     const reqObjForChiefCompalintReport = {
-      "fromDate": new Date(startDate.valueOf() - 1 * startDate.getTimezoneOffset() * 60 * 1000),
-      "toDate": new Date(endDate.valueOf() - 1 * endDate.getTimezoneOffset() * 60 * 1000),
-      "providerServiceMapID": this.providerServiceMapID,
-      "userID": this.userID
-    }
-    console.log("Data form data", JSON.stringify(reqObjForChiefCompalintReport, null, 4));
+      fromDate: new Date(
+        startDate.valueOf() - 1 * startDate.getTimezoneOffset() * 60 * 1000,
+      ),
+      toDate: new Date(
+        endDate.valueOf() - 1 * endDate.getTimezoneOffset() * 60 * 1000,
+      ),
+      providerServiceMapID: this.providerServiceMapID,
+      userID: this.userID,
+    };
+    console.log(
+      'Data form data',
+      JSON.stringify(reqObjForChiefCompalintReport, null, 4),
+    );
 
-    this.schedulerService.getChiefComplaintReports(reqObjForChiefCompalintReport).subscribe((response: any) => {
-      console.log("Json data of response: ", JSON.stringify(response, null, 4));
-      if (response.statusCode === 200) {
-        this.chiefComplaintRawData = response.data;
-        console.log('chiefComplaintRawData', JSON.stringify(this.chiefComplaintRawData, null, 4));
+    this.schedulerService
+      .getChiefComplaintReports(reqObjForChiefCompalintReport)
+      .subscribe({
+        next: (response: any) => {
+          console.log(
+            'Json data of response: ',
+            JSON.stringify(response, null, 4),
+          );
+          if (response.statusCode === 200) {
+            this.chiefComplaintRawData = response.data[0].chiefComplaintReport;
+            console.log(
+              'chiefComplaintRawData',
+              JSON.stringify(this.chiefComplaintRawData, null, 4),
+            );
 
-        this.getResponseOfSearchThenDo();
-      } else {
-        this.confirmationService.alert(response.errorMessage, 'error');
-      }
-    }, (err) => {
-      this.confirmationService.alert(err, 'error');
-    })
+            this.getResponseOfSearchThenDo();
+          } else {
+            this.confirmationService.alert(response.errorMessage, 'error');
+          }
+        },
+        error: (err: any) => {
+          this.confirmationService.alert(err, 'error');
+        },
+      });
   }
 
   downloadReport(downloadFlag: any) {
@@ -150,12 +172,10 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
 
   getResponseOfSearchThenDo() {
     const criteria: any = [];
-    criteria.push({ 'Filter_Name': 'Start Date', 'value': this.startDate });
-    criteria.push({ 'Filter_Name': 'End Date', 'value': this.endDate });
-    // this.exportToxlsx(criteria);
+    criteria.push({ Filter_Name: 'Start Date', value: this.startDate });
+    criteria.push({ Filter_Name: 'End Date', value: this.endDate });
+    this.exportToxlsx(criteria);
   }
-
-  
 
   exportToxlsx(criteria: any) {
     if (criteria.length > 0) {
@@ -181,11 +201,11 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
         }
         return obj;
       });
-      if(array.length !== 0){
+      if (array.length !== 0) {
         const head = Object.keys(array[0]);
         console.log('head', head);
-        const wb_name = "Chief Complaint Report";
-      let i = 65; // starting from 65 since it is the ASCII code of 'A'.
+        const wb_name = 'Chief Complaint Report';
+        let i = 65; // starting from 65 since it is the ASCII code of 'A'.
         let count = 0;
         while (i < head.length + 65) {
           let j;
@@ -256,33 +276,51 @@ export class ChiefComplaintReportComponent implements OnInit, DoCheck {
         });
       }
       this.confirmationService.alert(
-        this.currentLanguageSet.monthlyReportdownloaded,
+        this.currentLanguageSet.chiefComplaintreportdownloaded,
         'success',
       );
-  }
-    else {
+    } else {
       this.confirmationService.alert(this.currentLanguageSet.norecordfound);
     }
   }
-
-  
+  convertToExcel(data: any[], sheetName: string): BlobPart {
+    const header = Object.keys(data[0]);
+    const excelContent =
+      header.join('\t') +
+      '\n' +
+      data
+        .map((row) => {
+          return header
+            .map((fieldName) => {
+              return row[fieldName];
+            })
+            .join('\t');
+        })
+        .join('\n');
+    return new Blob([excelContent], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+  }
   modifyHeader(headers: any, i: any) {
     let modifiedHeader: string;
-    modifiedHeader = headers[i - 65].toString().replace(/([A-Z])/g, ' $1').trim();
-    modifiedHeader = modifiedHeader.charAt(0).toUpperCase() + modifiedHeader.substr(1);
-    //console.log(modifiedHeader);
-    return modifiedHeader.replace(/I D/g, "ID");
+    modifiedHeader = headers[i - 65]
+      .toString()
+      .replace(/([A-Z])/g, ' $1')
+      .trim();
+    modifiedHeader =
+      modifiedHeader.charAt(0).toUpperCase() + modifiedHeader.slice(1);
+    return modifiedHeader.replace(/I D/g, 'ID');
   }
 
   //AN40085822 27/9/2021 Integrating Multilingual Functionality --Start--
-  ngDoCheck(){
+  ngDoCheck() {
     this.fetchLanguageResponse();
   }
 
   fetchLanguageResponse() {
     this.languageComponent = new SetLanguageComponent(this.httpServiceService);
     this.languageComponent.setLanguage();
-    this.currentLanguageSet = this.languageComponent.currentLanguageObject; 
+    this.currentLanguageSet = this.languageComponent.currentLanguageObject;
   }
   //--End--
 }

@@ -58,21 +58,3 @@ md-card {
     line-height: 40px;
     text-align: center;
 }
-
-.full-width-submit {
-    width: 100%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    height: 35px;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.text-field-color {
-    color: #52575C !important;
-}
-
-table.fc-list-table.table.table-striped {
-    color: #52575C !important;
-}

@@ -1,24 +1,24 @@
 /*
-* AMRIT – Accessible Medical Records via Integrated Technology 
-* Integrated EHR (Electronic Health Records) Solution 
-*
-* Copyright (C) "Piramal Swasthya Management and Research Institute" 
-*
-* This file is part of AMRIT.
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see https://www.gnu.org/licenses/.
-*/
+ * AMRIT – Accessible Medical Records via Integrated Technology
+ * Integrated EHR (Electronic Health Records) Solution
+ *
+ * Copyright (C) "Piramal Swasthya Management and Research Institute"
+ *
+ * This file is part of AMRIT.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see https://www.gnu.org/licenses/.
+ */
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -48,18 +48,19 @@ export class HttpInterceptorService implements HttpInterceptor {
     private router: Router,
     private confirmationService: ConfirmationService,
     private http: HttpClient,
-    // private setLanguageService: SetLanguageService
   ) {}
 
   intercept(
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    const key: any = sessionStorage.getItem('key');
+    const key: any = sessionStorage.getItem('tm-key');
     let modifiedReq = null;
     if (key !== undefined && key !== null) {
       modifiedReq = req.clone({
-        headers: req.headers.set('Authorization', key),
+        headers: req.headers
+          .set('Authorization', key)
+          .set('Content-Type', 'application/json'),
       });
     } else {
       modifiedReq = req.clone({
@@ -69,18 +70,17 @@ export class HttpInterceptorService implements HttpInterceptor {
     return next.handle(modifiedReq).pipe(
       tap((event: HttpEvent<any>) => {
         if (req.url !== undefined && !req.url.includes('cti/getAgentState'))
-          if (event instanceof HttpResponse) {
-            this.spinnerService.show();
-            console.log(event.body);
-            this.onSuccess(req.url, event.body);
-            this.spinnerService.show();
-            return event.body;
-          }
+          this.spinnerService.setLoading(true);
+        if (event instanceof HttpResponse) {
+          console.log(event.body);
+          this.onSuccess(req.url, event.body);
+          this.spinnerService.setLoading(false);
+          return event.body;
+        }
       }),
       catchError((error: HttpErrorResponse) => {
         console.error(error);
-
-        this.spinnerService.show();
+        this.spinnerService.setLoading(false);
         return throwError(error.error);
       }),
     );

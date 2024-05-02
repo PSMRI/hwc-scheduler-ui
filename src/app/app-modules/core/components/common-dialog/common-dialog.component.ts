@@ -20,11 +20,9 @@
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
 import { Component, OnInit, Output, EventEmitter, DoCheck } from '@angular/core';
-// import { MdDialogRef } from '@angular/material';
 import { HttpServiceService } from '../../services/http-service.service';
 import { SetLanguageComponent } from '../set-language.component';
 import { MatDialogRef } from '@angular/material/dialog';
-// import { SetLanguageComponent } from '../set-language.component';
 
 @Component({
   selector: 'app-common-dialog',
