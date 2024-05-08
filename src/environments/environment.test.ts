@@ -1,8 +1,8 @@
 /*
-* AMRIT – Accessible Medical Records via Integrated Technology
-* Integrated EHR (Electronic Health Records) Solution
+* AMRIT – Accessible Medical Records via Integrated Technology 
+* Integrated EHR (Electronic Health Records) Solution 
 *
-* Copyright (C) "Piramal Swasthya Management and Research Institute"
+* Copyright (C) "Piramal Swasthya Management and Research Institute" 
 *
 * This file is part of AMRIT.
 *
@@ -19,17 +19,26 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see https://www.gnu.org/licenses/.
 */
-
 // The file contents for the current environment will overwrite these during build.
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
+const commonIP = 'https://183.82.107.186:8080/';
+const tmIP = 'https://183.82.107.186:8080/';
+const schedulerIP = 'https://183.82.107.186:8080/';
+
+// With API MAN Configuration
+// const COMMON_API_OPEN = `http://${IP}:8080/apiman-gateway/IEMR/Common/open/`;
+// const COMMON_API = `http://${IP}:8080/apiman-gateway/IEMR/Common/open/`;
+// const TM_API = `http://${IP}:8080/apiman-gateway/IEMR/TM/1.0/`;
+// const SCHEDULER_API = `http://${IP}:8080/apiman-gateway/IEMR/Scheduling/v1.0/`;
+
 // Without API MAN Configuration
-const COMMON_API_OPEN = '<%= COMMON_API_BASE %>';
-const COMMON_API = '<%= COMMON_API_BASE %>';
-const SCHEDULER_API = '<%= SCHEDULER_API_BASE %>';
-const TM_API = '<%= TM_API_BASE %>';
+const COMMON_API_OPEN = `${commonIP}commonapi-v1.0/`;
+const COMMON_API = `${commonIP}commonapi-v1.0/`;
+const SCHEDULER_API = `${schedulerIP}schedulerapi-v1.0/`;
+const TM_API = `${tmIP}hwc-facility-service/`;
 
 export const environment = {
   production: true,
