@@ -48,4 +48,4 @@ jobs:
       uses: actions/upload-artifact@v2 
       with:
         name: HWC-Scheduler-UI
-        path: dist/hwc-scheduler-ui-next/hwc-scheduler-ui-next.war
+        path: dist/hwc-scheduler-ui/hwc-scheduler-ui.war

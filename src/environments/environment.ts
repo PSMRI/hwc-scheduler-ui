@@ -24,10 +24,10 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-const commonIP = 'http://183.82.107.186:8080/';
-const tmIP = 'http://183.82.107.186:8080/';
-const schedulerIP = 'http://183.82.107.186:8080/';
-const IP = '10.208.122.32';
+const commonIP = 'https://amritwprdev.piramalswasthya.org/';
+const tmIP = 'https://amritwprdev.piramalswasthya.org/';
+const schedulerIP = 'https://amritwprdev.piramalswasthya.org/';
+const IP = 'amritwprdev.piramalswasthya.org';
 
 // const commonIP = 'http://localhost:8080/';
 // const tmIP = 'http://localhost:8080/';
@@ -47,7 +47,7 @@ const SCHEDULER_API = `${schedulerIP}schedulerapi-v1.0/`;
 const TM_API = `${tmIP}hwc-facility-service/`;
 
 // const TM_API = `${tmIP}tmapi-v1.0/`;
-const MMU_API = `http://${IP}:8080/mmuapi-v1.0/`;
+const MMU_API = `https://${IP}/mmuapi-v1.0/`;
 
 export const environment = {
   production: false,
