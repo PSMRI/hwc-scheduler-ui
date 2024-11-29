@@ -1,5 +1,5 @@
 {
-  "name": "hwc-scheduler-ui",
+  "name": "hwc-scheduler-ui-next",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -45,8 +45,10 @@
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "install": "^0.13.0",
+    "ng-cryptostore": "^16.0.0",
     "ng2-charts": "^5.0.4",
     "ngx-bootstrap": "^12.0.0",
+    "ngx-cookie-service": "^18.0.0",
     "ngx-mat-timepicker": "^17.1.0",
     "ngx-webcam": "^0.4.1",
     "npm": "^10.5.2",
