@@ -59,7 +59,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    const key: any = this.sessionstorage.getItem('tm-key');
+    const key: any = sessionStorage.getItem('tm-key');
     const tokn = this.cookieService.get('Jwttoken');
 
     let modifiedReq = null;

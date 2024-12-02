@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
 
   // For setting language
   canActivate(route: any, state: any) {
-    if (this.sessionstorage.getItem('tm-isAuthenticated')) {
+    if (sessionStorage.getItem('tm-isAuthenticated')) {
       return true;
     }
     else {

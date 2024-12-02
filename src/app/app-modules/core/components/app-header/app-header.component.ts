@@ -78,7 +78,7 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
     const tmUserName: any = this.sessionstorage.getItem('tm-userName');
     this.userName = tmUserName;
     this.fetchLanguageSet();
-    this.isAuthenticated = this.sessionstorage.getItem('tm-isAuthenticated') === 'true' ? true : false;
+    this.isAuthenticated = sessionStorage.getItem('tm-isAuthenticated') === 'true' ? true : false;
     
   }
 

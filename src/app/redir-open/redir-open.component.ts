@@ -94,7 +94,7 @@ export class RedirOpenComponent implements OnInit {
     this.externalSession.auth =
       params['user'] === 'undefined' ? undefined : params['user'];
     if (this.externalSession && this.externalSession.auth) {
-      this.sessionstorage.setItem('tm-key', this.externalSession.auth);
+      sessionStorage.setItem('tm-key', this.externalSession.auth);
       this.sessionstorage.setItem(
         'tm-parentLogin',
         `${this.externalSession.protocol}//${this.externalSession.host}`,
@@ -186,8 +186,8 @@ export class RedirOpenComponent implements OnInit {
       `${this.externalSession.protocol}//${this.externalSession.host}`,
     );
     this.sessionstorage.setItem('tm-host', `${this.externalSession.parentApp}`);
-    this.sessionstorage.setItem('tm-key', this.externalSession.auth);
-    this.sessionstorage.setItem('tm-isAuthenticated', 'true');
+    sessionStorage.setItem('tm-key', this.externalSession.auth);
+    sessionStorage.setItem('tm-isAuthenticated', 'true');
 
     this.sessionstorage.setItem('tm-roles', JSON.stringify(loginResponse.roles));
     this.sessionstorage.setItem('tm-designation', loginResponse.designation);
