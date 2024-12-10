@@ -24,12 +24,11 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-import { keys } from "./enckey";
-
 const commonIP = 'https://amritwprdev.piramalswasthya.org/';
 const tmIP = 'https://amritwprdev.piramalswasthya.org/';
 const schedulerIP = 'https://amritwprdev.piramalswasthya.org/';
 const IP = 'amritwprdev.piramalswasthya.org';
+const sessionStorageEncKey = '<%= SESSION_STORAGE_ENC_KEY %>';
 
 // const commonIP = 'http://localhost:8080/';
 // const tmIP = 'http://localhost:8080/';
@@ -53,7 +52,7 @@ const MMU_API = `https://${IP}/mmuapi-v3.0.0/`;
 
 export const environment = {
   production: false,
-  encKey: keys.dev,
+  encKey: sessionStorageEncKey,
   app: `TM`,
 
   /**

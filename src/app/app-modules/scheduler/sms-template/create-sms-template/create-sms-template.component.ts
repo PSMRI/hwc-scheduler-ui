@@ -28,7 +28,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SetLanguageComponent } from '../../../core/components/set-language.component';
 import { HttpServiceService } from 'src/app/app-modules/core/services/http-service.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { SessionStorageService } from 'src/app/app-modules/core/services/session-storage.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 @Component({
   selector: 'app-create-sms-template',
   templateUrl: './create-sms-template.component.html',

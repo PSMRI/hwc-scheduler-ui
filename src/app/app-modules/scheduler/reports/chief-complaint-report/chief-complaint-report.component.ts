@@ -27,7 +27,7 @@ import { SetLanguageComponent } from 'src/app/app-modules/core/components/set-la
 import { HttpServiceService } from 'src/app/app-modules/core/services/http-service.service';
 import * as ExcelJS from 'exceljs';
 import * as saveAs from 'file-saver';
-import { SessionStorageService } from 'src/app/app-modules/core/services/session-storage.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 declare global {
   interface Navigator {
