@@ -40,7 +40,7 @@ import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { DateTime } from 'ts-luxon';
 import * as moment from 'moment';
-import { SessionStorageService } from '../../core/services/session-storage.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Component({
   selector: 'app-timesheet',

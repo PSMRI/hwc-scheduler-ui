@@ -31,7 +31,7 @@ import { SpinnerService } from '../app-modules/core/services/spinner.service';
 import { Location } from '@angular/common';
 import { AuthService } from '../app-modules/core/services/auth.service';
 import { ConfirmationService } from '../app-modules/core/services/confirmation.service';
-import { SessionStorageService } from '../app-modules/core/services/session-storage.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Component({
   selector: 'app-redir-open',

@@ -24,7 +24,7 @@ import { SchedulerService } from '../shared/services';
 import { Router } from '@angular/router';
 import { SetLanguageComponent } from '../../core/components/set-language.component';
 import { HttpServiceService } from '../../core/services/http-service.service';
-import { SessionStorageService } from '../../core/services/session-storage.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Component({
   selector: 'app-mystaff',

@@ -9,7 +9,7 @@ import { HttpServiceService } from '../../core/services/http-service.service';
 import * as moment from 'moment';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { SessionStorageService } from '../../core/services/session-storage.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 @Component({
   selector: 'app-appointment-view',
   templateUrl: './appointment-view.component.html',

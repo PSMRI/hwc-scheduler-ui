@@ -23,7 +23,7 @@ import { DoCheck, Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
 import { SetLanguageComponent } from '../components/set-language.component';
 import { HttpServiceService } from './http-service.service';
-import { SessionStorageService } from './session-storage.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
