@@ -36,7 +36,6 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { SpinnerService } from './spinner.service';
 import { ConfirmationService } from './confirmation.service';
 import { environment } from 'src/environments/environment';
-import { CookieService } from 'ngx-cookie-service';
 import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Injectable({
@@ -51,7 +50,6 @@ export class HttpInterceptorService implements HttpInterceptor {
     private confirmationService: ConfirmationService,
     readonly sessionstorage: SessionStorageService,
     private http: HttpClient,
-    private cookieService: CookieService,
 
   ) {}
 
@@ -60,7 +58,6 @@ export class HttpInterceptorService implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     const key: any = sessionStorage.getItem('tm-key');
-    const tokn = this.cookieService.get('Jwttoken');
 
     let modifiedReq = null;
     if (key !== undefined && key !== null) {
@@ -68,7 +65,6 @@ export class HttpInterceptorService implements HttpInterceptor {
         headers: req.headers
           .set('Authorization', key)
           .set('Content-Type', 'application/json'),
-          // .set('Jwttoken', tokn),
       });
     } else {
       modifiedReq = req.clone({
