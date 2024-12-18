@@ -28,7 +28,7 @@ const commonIP = 'https://amritwprdev.piramalswasthya.org/';
 const tmIP = 'https://amritwprdev.piramalswasthya.org/';
 const schedulerIP = 'https://amritwprdev.piramalswasthya.org/';
 const IP = 'amritwprdev.piramalswasthya.org';
-const sessionStorageEncKey = 'asdfghjklkjhgf';
+const sessionStorageEncKey = '<>';
 
 // const commonIP = 'http://localhost:8080/';
 // const tmIP = 'http://localhost:8080/';
