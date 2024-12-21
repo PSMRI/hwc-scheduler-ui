@@ -24,6 +24,7 @@ import { SchedulerService } from '../shared/services';
 import { Router } from '@angular/router';
 import { SetLanguageComponent } from '../../core/components/set-language.component';
 import { HttpServiceService } from '../../core/services/http-service.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Component({
   selector: 'app-mystaff',
@@ -42,13 +43,14 @@ export class MystaffComponent implements OnInit,DoCheck {
 
   constructor(private schedulerService: SchedulerService,
     public httpServiceService:HttpServiceService,
+    readonly sessionstorage: SessionStorageService,
     private router: Router) { }
 
   ngOnInit() {
     const specialistListReq = {
       "specializationID": 0,
-      "providerServiceMapID": localStorage.getItem('tm-providerServiceMapID'),
-      "userID": localStorage.getItem('tm-userID')
+      "providerServiceMapID": this.sessionstorage.getItem('tm-providerServiceMapID'),
+      "userID": this.sessionstorage.getItem('tm-userID')
     }
     this.fetchLanguageResponse();
     this.getAllSpecialist(specialistListReq);
@@ -77,7 +79,7 @@ export class MystaffComponent implements OnInit,DoCheck {
   openProfile(specialist: any) {
     console.log('Opening profile..');
     const userID = specialist.userID;
-    localStorage.setItem('supervisor-specialistID',userID);
+    this.sessionstorage.setItem('supervisor-specialistID',userID);
     
     this.router.navigate(['telemedicine/profile', userID]);
   }

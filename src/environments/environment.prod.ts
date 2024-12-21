@@ -35,14 +35,15 @@ const schedulerIP = 'https://amritwprdev.piramalswasthya.org/';
 // const SCHEDULER_API = `http://${IP}:8080/apiman-gateway/IEMR/Scheduling/v1.0/`;
 
 // Without API MAN Configuration
-const COMMON_API_OPEN = `${commonIP}commonapi-v1.0/`;
-const COMMON_API = `${commonIP}commonapi-v1.0/`;
-const SCHEDULER_API = `${schedulerIP}schedulerapi-v1.0/`;
-const TM_API = `${tmIP}hwc-facility-service/`;
+const COMMON_API_OPEN = `${commonIP}commonapi-v3.0.0/`;
+const COMMON_API = `${commonIP}commonapi-v3.0.0/`;
+const SCHEDULER_API = `${schedulerIP}schedulerapi-v3.0.0/`;
+const TM_API = `${tmIP}hwc-facility-service-v3.0.0/`;
+const sessionStorageEncKey = '';
 
 export const environment = {
   production: true,
-
+  encKey: sessionStorageEncKey,
   app: `TM`,
 
   /**

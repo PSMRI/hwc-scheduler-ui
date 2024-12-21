@@ -9,6 +9,7 @@ import { HttpServiceService } from '../../core/services/http-service.service';
 import * as moment from 'moment';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 @Component({
   selector: 'app-appointment-view',
   templateUrl: './appointment-view.component.html',
@@ -53,13 +54,15 @@ export class AppointmentViewComponent implements OnInit, OnDestroy, DoCheck {
     public httpServiceService: HttpServiceService,
     private beneficiaryDetailsService: BeneficiaryDetailsService,
     private confirmationService: ConfirmationService,
+    readonly sessionstorage: SessionStorageService
+
   ) {}
 
   ngOnInit() {
     this.blankTable.length = 5;
     this.getSpecializationMaster();
     const userInfo = {
-      userID: localStorage.getItem('supervisor-specialistID'),
+      userID: this.sessionstorage.getItem('supervisor-specialistID'),
     };
     this.selectedSpecialist = userInfo;
     this.fetchLanguageResponse();
@@ -68,7 +71,7 @@ export class AppointmentViewComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   ngOnDestroy() {
-    localStorage.removeItem('supervisor-specialistID');
+    sessionStorage.removeItem('supervisor-specialistID');
   }
 
   getSpecializationMaster() {
@@ -81,10 +84,10 @@ export class AppointmentViewComponent implements OnInit, OnDestroy, DoCheck {
 
   getSpecialist() {
     this.selectedSpecialist = undefined;
-    const providerServiceMapID = localStorage.getItem(
+    const providerServiceMapID = this.sessionstorage.getItem(
       'tm-providerServiceMapID',
     );
-    const userID = localStorage.getItem('tm-userID');
+    const userID = this.sessionstorage.getItem('tm-userID');
     const specializationID = this.selectedSpecialization.specializationID;
 
     this.schedulerService
@@ -104,10 +107,10 @@ export class AppointmentViewComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   getAllAppointment() {
-    const providerServiceMapID = localStorage.getItem(
+    const providerServiceMapID = this.sessionstorage.getItem(
       'tm-providerServiceMapID',
     );
-    const userID = localStorage.getItem('tm-userID');
+    const userID = this.sessionstorage.getItem('tm-userID');
     const specializationID = null;
     const specialistID = this.selectedSpecialist.userID;
     let appointmentDate = new Date(this.viewDate);
@@ -237,7 +240,7 @@ export class AppointmentViewComponent implements OnInit, OnDestroy, DoCheck {
               benRegID: beneficiary.beneficiaryRegID,
               visitCode: beneficiary.visitCode,
               userID: beneficiary.tCSpecialistUserID,
-              modifiedBy: localStorage.getItem('tm-userName'),
+              modifiedBy: this.sessionstorage.getItem('tm-userName'),
             })
             .subscribe({
               next: (res: any) => {

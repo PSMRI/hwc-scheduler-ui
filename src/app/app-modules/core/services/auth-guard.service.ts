@@ -23,6 +23,7 @@ import { DoCheck, Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router, ActivatedRoute, RouterStateSnapshot } from '@angular/router';
 import { SetLanguageComponent } from '../components/set-language.component';
 import { HttpServiceService } from './http-service.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -33,6 +34,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     public httpServiceService: HttpServiceService,
+    readonly sessionstorage: SessionStorageService,
     private route: ActivatedRoute) {
       this.fetchLanguageResponse();
      }

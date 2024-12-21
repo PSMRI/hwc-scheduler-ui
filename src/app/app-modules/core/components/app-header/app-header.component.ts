@@ -27,6 +27,7 @@ import { HttpServiceService } from '../../services/http-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { ShowCommitAndVersionDetailsComponent } from '../show-commit-and-version-details/show-commit-and-version-details.component';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 @Component({
   selector: 'app-header',
   templateUrl: './app-header.component.html',
@@ -66,14 +67,15 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
     private auth: AuthService,
     public httpServiceService: HttpServiceService,
     private confirmationService: ConfirmationService,
+    readonly sessionstorage: SessionStorageService,
     private dialog: MatDialog) { }
   
   ngOnInit() {
     this.getUIVersionAndCommitDetails()
      this.license = environment.licenseUrl;
-     const servicePointName: any = localStorage.getItem('tm-servicePointName');
+     const servicePointName: any = this.sessionstorage.getItem('tm-servicePointName');
     this.servicePoint = servicePointName;
-    const tmUserName: any = localStorage.getItem('tm-userName');
+    const tmUserName: any = this.sessionstorage.getItem('tm-userName');
     this.userName = tmUserName;
     this.fetchLanguageSet();
     this.isAuthenticated = sessionStorage.getItem('tm-isAuthenticated') === 'true' ? true : false;
@@ -193,7 +195,7 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
   }]
 
   if (this.showRoles) {
-    const tmRoles: any = localStorage.getItem('tm-roles');
+    const tmRoles: any = this.sessionstorage.getItem('tm-roles');
     this.roles = JSON.parse(tmRoles);
     if (this.roles) {
       this.filteredNavigation = this.navigation.filter((item: any) => {
@@ -210,13 +212,13 @@ export class AppHeaderComponent implements OnInit, AfterContentChecked {
   }
 
   redirectToSpecialistWorklist() {
-    const returnUrl: any = sessionStorage.getItem('tm-return');
+    const returnUrl: any = this.sessionstorage.getItem('tm-return');
     window.location.href = returnUrl;
   }
 
   returnToMMU: any;
   logout() {
-    const loginUrl: any = sessionStorage.getItem('tm-fallback');
+    const loginUrl: any = this.sessionstorage.getItem('tm-fallback');
     this.auth.logout().subscribe({
       next: (res: any) => {
         this.auth.removeExternalSessionData();

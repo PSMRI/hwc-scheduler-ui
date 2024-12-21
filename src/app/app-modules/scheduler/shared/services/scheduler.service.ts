@@ -21,11 +21,13 @@
  */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class SchedulerService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,readonly sessionstorage: SessionStorageService
+  ) {}
 
   getServicePoints(userId: string, serviceProviderId: string) {
     return this.http.post(environment.servicePointUrl, {
@@ -129,7 +131,7 @@ export class SchedulerService {
   }
 
   getAllSMSTemplates(smsTypeID?: any) {
-    const providerServiceMapID = localStorage.getItem(
+    const providerServiceMapID = this.sessionstorage.getItem(
       'tm-providerServiceMapID',
     );
     return this.http.post(environment.getAllSMSTemplatesUrl, {

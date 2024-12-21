@@ -75,10 +75,10 @@ export class AuthService {
     sessionStorage.removeItem('tm-key');
     sessionStorage.removeItem('tm-isAuthenticated');
 
-    localStorage.removeItem('tm-designation');
-    localStorage.removeItem('tm-roles');
-    localStorage.removeItem('tm-userName');
-    localStorage.removeItem('tm-userID');
-    localStorage.removeItem('tm-providerServiceMapID');
+    sessionStorage.removeItem('tm-designation');
+    sessionStorage.removeItem('tm-roles');
+    sessionStorage.removeItem('tm-userName');
+    sessionStorage.removeItem('tm-userID');
+    sessionStorage.removeItem('tm-providerServiceMapID');
   }
 }

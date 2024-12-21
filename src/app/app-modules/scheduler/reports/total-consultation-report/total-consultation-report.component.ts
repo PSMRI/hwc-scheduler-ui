@@ -28,6 +28,7 @@ import { SetLanguageComponent } from '../../../core/components/set-language.comp
 import { HttpServiceService } from 'src/app/app-modules/core/services/http-service.service';
 import * as ExcelJS from 'exceljs';
 import * as saveAs from 'file-saver';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 declare global {
   interface Navigator {
@@ -51,6 +52,8 @@ export class TotalConsultationReportComponent implements OnInit, DoCheck {
     private schedulerService: SchedulerService,
     public httpServiceService: HttpServiceService,
     private confirmationService: ConfirmationService,
+    readonly sessionstorage: SessionStorageService
+
   ) {}
 
   providerServiceMapID: any;
@@ -62,8 +65,8 @@ export class TotalConsultationReportComponent implements OnInit, DoCheck {
   criteriaHead: any;
 
   ngOnInit() {
-    this.providerServiceMapID = localStorage.getItem('tm-providerServiceMapID');
-    this.userID = localStorage.getItem('tm-userID');
+    this.providerServiceMapID = this.sessionstorage.getItem('tm-providerServiceMapID');
+    this.userID = this.sessionstorage.getItem('tm-userID');
     this.fetchLanguageResponse();
     this.createTotalConsultationForm();
 

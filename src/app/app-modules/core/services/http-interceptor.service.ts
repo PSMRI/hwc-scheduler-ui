@@ -36,6 +36,7 @@ import { throwError } from 'rxjs/internal/observable/throwError';
 import { SpinnerService } from './spinner.service';
 import { ConfirmationService } from './confirmation.service';
 import { environment } from 'src/environments/environment';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,9 @@ export class HttpInterceptorService implements HttpInterceptor {
     private spinnerService: SpinnerService,
     private router: Router,
     private confirmationService: ConfirmationService,
+    readonly sessionstorage: SessionStorageService,
     private http: HttpClient,
+
   ) {}
 
   intercept(
@@ -55,6 +58,7 @@ export class HttpInterceptorService implements HttpInterceptor {
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     const key: any = sessionStorage.getItem('tm-key');
+
     let modifiedReq = null;
     if (key !== undefined && key !== null) {
       modifiedReq = req.clone({
@@ -94,7 +98,6 @@ export class HttpInterceptorService implements HttpInterceptor {
       url.indexOf('user/userAuthenticate') < 0
     ) {
       sessionStorage.clear();
-      localStorage.clear();
       setTimeout(() => this.router.navigate(['/login']), 0);
       this.confirmationService.alert(response.errorMessage, 'error');
     } else {
@@ -126,7 +129,7 @@ export class HttpInterceptorService implements HttpInterceptor {
               } else if (result.action === 'timeout') {
                 clearTimeout(this.timerRef);
                 sessionStorage.clear();
-                localStorage.clear();
+
                 this.confirmationService.alert(
                   this.currentLanguageSet.sessionExpired,
                   'error',
@@ -136,7 +139,7 @@ export class HttpInterceptorService implements HttpInterceptor {
                 setTimeout(() => {
                   clearTimeout(this.timerRef);
                   sessionStorage.clear();
-                  localStorage.clear();
+
                   this.confirmationService.alert(
                     this.currentLanguageSet.sessionExpired,
                     'error',

@@ -31,6 +31,7 @@ import { SpinnerService } from '../app-modules/core/services/spinner.service';
 import { Location } from '@angular/common';
 import { AuthService } from '../app-modules/core/services/auth.service';
 import { ConfirmationService } from '../app-modules/core/services/confirmation.service';
+import { SessionStorageService } from 'Common-UI/src/registrar/services/session-storage.service';
 
 @Component({
   selector: 'app-redir-open',
@@ -56,6 +57,8 @@ export class RedirOpenComponent implements OnInit {
     private auth: AuthService,
     private confirmationService: ConfirmationService,
     private authService: AuthService,
+    readonly sessionstorage: SessionStorageService
+
   ) {}
 
   ngOnInit() {
@@ -92,7 +95,7 @@ export class RedirOpenComponent implements OnInit {
       params['user'] === 'undefined' ? undefined : params['user'];
     if (this.externalSession && this.externalSession.auth) {
       sessionStorage.setItem('tm-key', this.externalSession.auth);
-      sessionStorage.setItem(
+      this.sessionstorage.setItem(
         'tm-parentLogin',
         `${this.externalSession.protocol}//${this.externalSession.host}`,
       );
@@ -127,7 +130,7 @@ export class RedirOpenComponent implements OnInit {
             const designation = this.getUserDesignation(res.data);
 
             const providerServiceMapID = TMPrevilegeObj[0].providerServiceMapID;
-            sessionStorage.setItem(
+            this.sessionstorage.setItem(
               'apimanClientKey',
               TMPrevilegeObj[0].apimanClientKey,
             );
@@ -170,30 +173,30 @@ export class RedirOpenComponent implements OnInit {
   }
 
   storeExernalSessionData(externalSession: any, loginResponse: any) {
-    sessionStorage.setItem(
+    this.sessionstorage.setItem(
       'tm-fallback',
       `${this.externalSession.protocol}//${this.externalSession.host}#${this.externalSession.fallbackURL}`,
     );
-    sessionStorage.setItem(
+    this.sessionstorage.setItem(
       'tm-return',
       `${this.externalSession.protocol}//${this.externalSession.host}#${this.externalSession.returnURL}`,
     );
-    sessionStorage.setItem(
+    this.sessionstorage.setItem(
       'tm-parentLogin',
       `${this.externalSession.protocol}//${this.externalSession.host}`,
     );
-    sessionStorage.setItem('tm-host', `${this.externalSession.parentApp}`);
+    this.sessionstorage.setItem('tm-host', `${this.externalSession.parentApp}`);
     sessionStorage.setItem('tm-key', this.externalSession.auth);
     sessionStorage.setItem('tm-isAuthenticated', 'true');
 
-    localStorage.setItem('tm-roles', JSON.stringify(loginResponse.roles));
-    localStorage.setItem('tm-designation', loginResponse.designation);
-    localStorage.setItem('tm-userName', loginResponse.userName);
-    localStorage.setItem(
+    this.sessionstorage.setItem('tm-roles', JSON.stringify(loginResponse.roles));
+    this.sessionstorage.setItem('tm-designation', loginResponse.designation);
+    this.sessionstorage.setItem('tm-userName', loginResponse.userName);
+    this.sessionstorage.setItem(
       'tm-providerServiceMapID',
       loginResponse.providerServiceMapID,
     );
-    localStorage.setItem('tm-userID', loginResponse.userID);
+    this.sessionstorage.setItem('tm-userID', loginResponse.userID);
   }
 
   checkUserRolesAndDesignation(roles: any, designation: any) {
